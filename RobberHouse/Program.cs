@@ -179,20 +179,28 @@ namespace RobberHouse
         static int Robber3(int[] nums)
         {
             ans = 0;
-            RobberRecursion(nums, 0, 0);
-            RobberRecursion(nums, 1, 0);
+            int length = nums.Length;
+            int last = 0;
+            for (int i = 0; i < length; ++i)
+            {
+                last = (i + length ) % (length+1);
+                RobberRecursion(nums, i, 0, last);
+                RobberRecursion(nums, i+1, 0, last);
+            }
             return ans;
         }
-        static void RobberRecursion(int[] nums, int index, int answer)
+        static void RobberRecursion(int[] nums, int index, int answer,int last)
         {
-            if (index >= nums.Length)
+            if (index == last || index == last + 1 || index == last+2)
             {
                 if (answer > ans) ans = answer;
             }
             else
             {
-                RobberRecursion(nums, index + 2, answer + nums[index]);
-                RobberRecursion(nums, index + 3, answer + nums[index]);
+                //if( index + 2 != length && index + 2 != length + 1)
+                RobberRecursion(nums, index + 2, answer + nums[index], last);
+                //if (index + 3 != length && index +3 != length+1 && index+3 != length+2)
+                RobberRecursion(nums, index + 3, answer + nums[index], last);
             }
         }
 
