@@ -14,8 +14,12 @@ namespace RobberHouse
             //                            200,    , 182,        , 194,    , 217,   , 162,        , 81,   , 232,    , 223,    , 139,
             //                            200,    , 182,    , 87,    , 221,    , 71,    , 140,   , 81,   , 232,    , 223,    , 139,
             //                            200,    , 182,    , 87,    ,    , 217,   , 162,    , 51,   , 80,    , 193,    , 103,    , 103
-            arrayNums = new int[] { 1, 3, 1, 3, 100 };
-            arrayNums = new int[] { 8, 2, 8, 9, 2 };
+            //arrayNums = new int[] { 1, 3, 1, 3, 100 };
+            //arrayNums = new int[] { 8, 2, 8, 9, 2 };
+            //arrayNums = new int[] { 2, 3, 2 };
+            //arrayNums = new int[] { 0 };
+            //arrayNums = new int[] { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
+            arrayNums = new int[] { 1, 2, 3, 1 };
             //Console.WriteLine(Robber(arrayNums));
             Console.WriteLine(Robber3(arrayNums));
             //Console.WriteLine(Robber2(arrayNums));
@@ -176,23 +180,27 @@ namespace RobberHouse
             }
         }
         static int ans = 0;
+        static int length = 0;
         static int Robber3(int[] nums)
         {
             ans = 0;
-            int length = nums.Length;
+            length = nums.Length;
+            if (length == 0) return 0;
+            if (length == 1) return nums[0];
             int last = 0;
             for (int i = 0; i < length; ++i)
             {
-                last = (i + length ) % (length+1);
-                RobberRecursion(nums, i, 0, last);
-                RobberRecursion(nums, i+1, 0, last);
+                RobberRecursion(nums, i, 0, NumberInCircle(i-2));
+                RobberRecursion(nums, i+1, 0, NumberInCircle(i-1));
             }
             return ans;
         }
         static void RobberRecursion(int[] nums, int index, int answer,int last)
         {
-            if (index == last || index == last + 1 || index == last+2)
+            index = NumberInCircle(index);
+            if (/*index == NumberInCircle(last - 2) || */index == NumberInCircle(last -1)|| index == NumberInCircle(last))
             {
+                answer = answer + nums[index];
                 if (answer > ans) ans = answer;
             }
             else
@@ -202,6 +210,10 @@ namespace RobberHouse
                 //if (index + 3 != length && index +3 != length+1 && index+3 != length+2)
                 RobberRecursion(nums, index + 3, answer + nums[index], last);
             }
+        }
+        static int NumberInCircle(int nums)
+        {
+            return (nums + length) % length ;
         }
 
     }
